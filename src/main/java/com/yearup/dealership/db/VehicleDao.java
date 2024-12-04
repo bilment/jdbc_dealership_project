@@ -38,7 +38,18 @@ public class VehicleDao {
     }
 
     public void removeVehicle(String VIN) {
-        // TODO: Implement the logic to remove a vehicle
+        String sql = "DELETE FROM vehicles WHERE VIN = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, VIN);
+            statement.executeUpdate();
+
+            System.out.println("Vehicle removed successfully.");
+        } catch (SQLException e) {
+            System.err.println("Error removing vehicle: " + e.getMessage());
+        }
     }
 
     public List<Vehicle> searchByPriceRange(double minPrice, double maxPrice) {
